@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+class Election
+{
+private:
+    string candidateName;
+    int votes;
+
+public:
+    void getData()
+    {
+        cout << "Enter Candidate Name: ";
+        cin >> candidateName;
+
+        cout << "Enter Votes: ";
+        cin >> votes;
+
+        if (votes < 0)
+        {
+            cout << "Invalid Votes! Setting to 0\n";
+            votes = 0;
+        }
+    }
+
+    string getName()
+    {
+        return candidateName;
+    }
+
+    int getVotes()
+    {
+        return votes;
+    }
+};
+
+int main()
+{
+    int regions, candidates;
+
+    cout << "Enter Number of Regions: ";
+    cin >> regions;
+
+    cout << "Enter Number of Candidates: ";
+    cin >> candidates;
+
+    int totalVotes[50] = {0};
+    int totalCandidates = regions * candidates;
+
+    for (int i = 0; i < regions; i++)
+    {
+        cout << "\nRegion " << i + 1 << endl;
+
+        Election e[50];
+
+        int maxVotes = -1;
+        string winner;
+        bool tie = false;
+
+        for (int j = 0; j < candidates; j++)
+        {
+            e[j].getData();
+
+            totalVotes[j] += e[j].getVotes();
+
+            if (e[j].getVotes() > maxVotes)
+            {
+                maxVotes = e[j].getVotes();
+                winner = e[j].getName();
+                tie = false;
+            }
+            else if (e[j].getVotes() == maxVotes)
+            {
+                tie = true;
+            }
+        }
+
+        if (tie)
+            cout << "Regional Result: Tie" << endl;
+        else
+            cout << "Regional Winner: " << winner << endl;
+    }
+
+    int overallMax = -1;
+    int winnerIndex = -1;
+    bool overallTie = false;
+
+    for (int i = 0; i < candidates; i++)
+    {
+        if (totalVotes[i] > overallMax)
+        {
+            overallMax = totalVotes[i];
+            winnerIndex = i;
+            overallTie = false;
+        }
+        else if (totalVotes[i] == overallMax)
+        {
+            overallTie = true;
+        }
+    }
+
+    cout << "\nOverall Election Result\n";
+
+    if (overallTie)
+        cout << "Overall Result: Tie" << endl;
+    else
+        cout << "Candidate " << winnerIndex + 1
+             << " is the Overall Winner with "
+             << overallMax << " votes" << endl;
+
+    cout << "Total Candidates Processed: "
+         << totalCandidates << endl;
+
+    return 0;
+}
