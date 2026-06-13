@@ -1,0 +1,101 @@
+#include <iostream>
+using namespace std;
+
+class Student
+{
+private:
+    string name;
+    int marks;
+
+public:
+    void getData()
+    {
+        cout << "Enter Student Name: ";
+        cin >> name;
+
+        cout << "Enter Marks: ";
+        cin >> marks;
+    }
+
+    int getMarks()
+    {
+        return marks;
+    }
+
+    string getName()
+    {
+        return name;
+    }
+};
+
+int main()
+{
+    int dept;
+
+    cout << "Enter Number of Departments: ";
+    cin >> dept;
+
+    int overallTop = -1;
+    string overallTopper;
+    int totalStudents = 0;
+
+    for (int i = 0; i < dept; i++)
+    {
+        int n;
+
+        cout << "\nEnter Number of Students in Department "
+             << i + 1 << ": ";
+        cin >> n;
+
+        totalStudents += n;
+
+        if (n == 0)
+        {
+            cout << "Department is Empty\n";
+            continue;
+        }
+
+        Student s[50];
+
+        int passCount = 0;
+        int deptTop = -1;
+        string deptTopper;
+
+        for (int j = 0; j < n; j++)
+        {
+            cout << "\nStudent " << j + 1 << endl;
+            s[j].getData();
+
+            if (s[j].getMarks() >= 40)
+                passCount++;
+
+            if (s[j].getMarks() > deptTop)
+            {
+                deptTop = s[j].getMarks();
+                deptTopper = s[j].getName();
+            }
+
+            if (s[j].getMarks() > overallTop)
+            {
+                overallTop = s[j].getMarks();
+                overallTopper = s[j].getName();
+            }
+        }
+
+        float passPercent = (passCount * 100.0) / n;
+
+        cout << "\nDepartment Topper: "
+             << deptTopper << " (" << deptTop << " Marks)" << endl;
+
+        cout << "Pass Percentage: "
+             << passPercent << "%" << endl;
+    }
+
+    cout << "\nOverall University Topper: "
+         << overallTopper << " (" << overallTop << " Marks)" << endl;
+
+    cout << "Total Students: "
+         << totalStudents << endl;
+
+    return 0;
+}
