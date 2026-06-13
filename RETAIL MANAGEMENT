@@ -1,0 +1,156 @@
+#include <iostream>
+using namespace std;
+
+class Product
+{
+private:
+    string name;
+    float price;
+    int quantity;
+
+public:
+    void getData()
+    {
+        cout << "Enter Product Name: ";
+        cin >> name;
+
+        cout << "Enter Price: ";
+        cin >> price;
+
+        cout << "Enter Quantity Sold: ";
+        cin >> quantity;
+    }
+
+    float getSales()
+    {
+        return price * quantity;
+    }
+
+    string getName()
+    {
+        return name;
+    }
+
+    void display()
+    {
+        cout << "\nProduct: " << name;
+        cout << "\nPrice: " << price;
+        cout << "\nQuantity Sold: " << quantity;
+        cout << "\nSales: " << getSales() << endl;
+    }
+};
+
+class Store
+{
+private:
+    Product p[10];
+    int n;
+
+public:
+    void getStoreData()
+    {
+        cout << "\nEnter Number of Products: ";
+        cin >> n;
+
+        for(int i = 0; i < n; i++)
+        {
+            cout << "\nProduct " << i + 1 << endl;
+            p[i].getData();
+        }
+    }
+
+    float calculateStoreSales()
+    {
+        float total = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            total += p[i].getSales();
+        }
+
+        return total;
+    }
+
+    void displayProducts()
+    {
+        for(int i = 0; i < n; i++)
+        {
+            p[i].display();
+        }
+    }
+
+    Product getProduct(int i)
+    {
+        return p[i];
+    }
+
+    int getCount()
+    {
+        return n;
+    }
+};
+
+int main()
+{
+    int stores;
+
+    cout << "Enter Number of Stores: ";
+    cin >> stores;
+
+    Store s[10];
+
+    float overallSales = 0;
+    float highestStoreSales = 0;
+    int bestStore = 0;
+
+    float highestProductSales = 0;
+    string bestProduct;
+
+    for(int i = 0; i < stores; i++)
+    {
+        cout << "\nStore " << i + 1 << endl;
+
+        s[i].getStoreData();
+
+        float storeSales = s[i].calculateStoreSales();
+        overallSales += storeSales;
+
+        if(storeSales > highestStoreSales)
+        {
+            highestStoreSales = storeSales;
+            bestStore = i + 1;
+        }
+
+        for(int j = 0; j < s[i].getCount(); j++)
+        {
+            Product temp = s[i].getProduct(j);
+
+            if(temp.getSales() > highestProductSales)
+            {
+                highestProductSales = temp.getSales();
+                bestProduct = temp.getName();
+            }
+        }
+    }
+
+    cout << "\n\n--- STORE SALES REPORT ---\n";
+
+    for(int i = 0; i < stores; i++)
+    {
+        cout << "\nStore " << i + 1 << endl;
+        s[i].displayProducts();
+        cout << "Store Sales = "
+             << s[i].calculateStoreSales() << endl;
+    }
+
+    cout << "\nOverall Sales = "
+         << overallSales << endl;
+
+    cout << "Best Performing Store = Store "
+         << bestStore << endl;
+
+    cout << "Best Selling Product = "
+         << bestProduct << endl;
+
+    return 0;
+}
